@@ -3,7 +3,6 @@ package com.spring.ex04;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -94,19 +93,4 @@ public class MemberDAO {
 		session.commit();
 		return result;
 	}
-
-	public int insertMember2(Map<String, String> memberMap) {
-		sqlMapper = getInstance();
-		SqlSession session = sqlMapper.openSession();
-		// memberMap 매개변수는 insertMember2() 메서드로 전달된
-		// HashMap을 다시 SQL문으로 전달합니다.
-		// 즉, 여기서 SqlSession 클래스의 insert() 메서드 호출 시
-		// 두 번째 인자로 HashMap을 전달합니다.
-		int result = session.insert("mapper.member.insertMember2", memberMap);
-				
-		// 수동 커밋이므로 반드시 commit() 메서드를 호출하여 영구 반영합니다.
-		session.commit();
-		return result;
-	}
-		
 }

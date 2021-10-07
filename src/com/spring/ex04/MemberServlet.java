@@ -1,9 +1,7 @@
 package com.spring.ex04;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -66,21 +64,19 @@ public class MemberServlet  extends HttpServlet{
 			List<MemberVO> membersList = dao.selectMemberByPwd(pwd);
 			request.setAttribute("membersList", membersList);
 			nextPage="test03/listMembers.jsp";
-		} else if(action.equals("insertMember2")) {
+		} else if(action.equals("insertMember")) {
 			String id = request.getParameter("id");
 			String pwd = request.getParameter("pwd");
 			String name = request.getParameter("name");
 			String email = request.getParameter("email");
-			
-			Map memberMap = new HashMap();
-			memberMap.put("id", id);
-			memberMap.put("pwd", pwd);
-			memberMap.put("name", name);
-			memberMap.put("email", email);
+			memberVO.setId(id);
+			memberVO.setPwd(pwd);
+			memberVO.setName(name);
+			memberVO.setEmail(email);
 			
 			// 회원 가입창에서 전송된 회원 정보를 MemberVO에 설정한 후
 			// insertMember() 메서드로 전달합니다.
-			dao.insertMember2(memberMap);
+			dao.insertMember(memberVO);
 			nextPage="/mem4.do?action=listMembers";
 	}
 		RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);

@@ -19,10 +19,6 @@
      memberVO 빈에 저장합니다. -->  
 <!-- 레코드의 칼럼 이름에 대해 memberVO의 같은 속성에 값도 설정합니다. -->
 
-<!-- 앞서 MemberVO에 회원 정보를 설정한 후 SQL문으로 전달하여 테이블에
-     insert 추가했습니다. 이번에는 HashMap에 회원 정보를 설정하기 위해
-     type="memberVO"의 resultMap 태그 부분을 주석 처리 합니다. -->
-<!-- 
 	<resultMap id="memResult" type="memberVO">
 
 		<result property="id" column="id" />
@@ -31,8 +27,6 @@
         <result property="email" column="email" />
         <result property="joinDate" column="joinDate" />
 	</resultMap>
-
- -->
 	 
 <!-- 이번에는 자바의 HashMap을 이용해 모든 회원을 죄회하는 기능을 실습해 보겠습니다.
      <resultMap> 태그의 type 속성에는 HashMap이 지정되어 있습니다.
@@ -40,6 +34,7 @@
      Hashmap에 차례대로 저장합니다. -->
 <!-- 여기서, type="java.util.HashMap"의 의미는
          조회한 레코드를 지정한 컬럼 이름을 key, 값을 value로 해서 저장합니다.-->  
+<!-- 
 	<resultMap id="memResult" type="java.util.HashMap">
       <result property="id" column="id" />
       <result property="pwd" column="pwd" />
@@ -47,7 +42,7 @@
       <result property="email" column="email" />
       <result property="joinDate" column="joinDate" />
    </resultMap>
-
+ -->
 
 	<!-- DAO에서 namespace.id를 이용해(즉, id="selectAllMemberList")
 	         해당 SQL문을 호출합니다. -->
@@ -149,9 +144,6 @@
 		]]>      
 	</insert>
 	
-	<!-- MemberDAO에서 회원 정보를 HashMap에 담아서 전달합니다. -->
-	<!-- 이번에 values(#{id}, #{pwd}, #{name}, #{email})는
-	     HashMap에 각각의 key로 저장된 value를 가져와 테이블에 추가합니다. -->
 	<insert id="insertMember2"  parameterType="java.util.Map">
 		<![CDATA[
 			 insert into t_member(id,pwd, name, email)
