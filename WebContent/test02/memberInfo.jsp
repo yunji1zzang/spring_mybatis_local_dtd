@@ -5,6 +5,8 @@ isELIgnored="false" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  
+<!-- memberInfo.jsp는 검색 조건으로 조회한 회원 정보를 출력합니다. -->
+ 
 <html>
 <head>
 <meta charset=UTF-8">
