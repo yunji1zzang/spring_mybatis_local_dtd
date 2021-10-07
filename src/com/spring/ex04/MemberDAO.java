@@ -3,6 +3,7 @@ package com.spring.ex04;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -90,6 +91,51 @@ public class MemberDAO {
 		// 회원 정보를 테이블에 추가합니다.
 		result = session.insert("mapper.member.insertMember", memberVO);
 		// 수동 커밋이므로 반드시 commit() 메서드를 호출하여 영구 반영합니다.
+		session.commit();
+		return result;
+	}
+
+	public int insertMember2(Map<String, String> memberMap) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		// memberMap 매개변수는 insertMember2() 메서드로 전달된
+		// HashMap을 다시 SQL문으로 전달합니다.
+		// 즉, 여기서 SqlSession 클래스의 insert() 메서드 호출 시
+		// 두 번째 인자로 HashMap을 전달합니다.
+		int result = session.insert("mapper.member.insertMember2", memberMap);
+				
+		// 수동 커밋이므로 반드시 commit() 메서드를 호출하여 영구 반영합니다.
+		session.commit();
+		return result;
+	}
+
+	// MemberDAO에서 SqlSession 클래스의 update() 메서드를 이용해서
+	// update문을 실행하도록 다음과 같이 설정합니다.
+	// update() 메서드를 호출하면서 서블릿에서 전달된  memberVO를
+	// update 문으로 전달합니다. update() 메서드로 SQL문을 실행한 후에
+	// 반드시 commit() 메서드를 사용해서 커밋을 해주어야 합니다.
+	public int updateMember(MemberVO memberVO) {
+		
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+ 	              	 // update문 호출 시 SqlSession의
+					 // update() 메서드를 이용합니다.
+		int result = session.update("mapper.member.updateMember", memberVO);
+		session.commit();
+		return result;
+	}
+
+	// MemberDAO에서 SqlSession 클래스의 delete() 메서드를 이용해서
+	// delete문을 실행하고, 전달된 ID를 다시 delete() 메서드를 호출하면서
+	// delete문으로 전달합니다. 
+	public int deleteMember(String id) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		int result = 0;
+				// delete문을 실행하려면 SqlSession의
+				// delete() 메서드를 이용해야 합니다.
+		result = session.delete("mapper.member.deleteMember", id);
+		// SQL문을 실행한 후 반드시 커밋합니다.
 		session.commit();
 		return result;
 	}

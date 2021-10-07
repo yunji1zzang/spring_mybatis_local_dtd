@@ -32,6 +32,8 @@
       <td>${member.name}</td>
       <td>${member.email}</td>
       <td>${member.joinDate}</td>
+      <!-- action=deleteMember&id=${member.id} 의미는
+                    삭제하기 클릭 시 action 값과 회원 ID를 서블릿으로 전송함을 의미합니다. -->
       <td><a href="${contextPath}/mem4.do?action=deleteMember&id=${member.id }">삭제하기</a></td>
       
     </tr>

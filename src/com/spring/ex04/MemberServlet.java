@@ -1,7 +1,9 @@
 package com.spring.ex04;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -64,20 +66,46 @@ public class MemberServlet  extends HttpServlet{
 			List<MemberVO> membersList = dao.selectMemberByPwd(pwd);
 			request.setAttribute("membersList", membersList);
 			nextPage="test03/listMembers.jsp";
-		} else if(action.equals("insertMember")) {
+		} else if(action.equals("insertMember2")) {
 			String id = request.getParameter("id");
 			String pwd = request.getParameter("pwd");
 			String name = request.getParameter("name");
 			String email = request.getParameter("email");
-			memberVO.setId(id);
-			memberVO.setPwd(pwd);
-			memberVO.setName(name);
-			memberVO.setEmail(email);
+			
+			Map<String, String> memberMap =
+					new HashMap<String, String>();
+			memberMap.put("id", id);
+			memberMap.put("pwd", pwd);
+			memberMap.put("name", name);
+			memberMap.put("email", email);
 			
 			// 회원 가입창에서 전송된 회원 정보를 MemberVO에 설정한 후
 			// insertMember() 메서드로 전달합니다.
-			dao.insertMember(memberVO);
+			dao.insertMember2(memberMap);
 			nextPage="/mem4.do?action=listMembers";
+	
+	} else if(action.equals("updateMember")) {
+		String id = request.getParameter("id");
+		String pwd = request.getParameter("pwd");
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		
+		memberVO.setId(id);
+		memberVO.setPwd(pwd);
+		memberVO.setName(name);
+		memberVO.setEmail(email);
+		
+		// 회원 수정 창에서 전송된 회원 정보를 MemberVO의 속성에 설정한 후
+		// updateMember() 메서드를 호출하면서 MemberVO 객체를 전달합니다.
+		dao.updateMember(memberVO);
+		nextPage="/mem4.do?action=listMembers";
+	} else if(action.equals("deleteMember")) {
+		// 회원 ID를 가져옵니다.
+		String id = request.getParameter("id");
+		// 회원 목록 창에서 전달된 ID를 deleteMember() 메서드를
+		// 호출하면서 SQL문으로 전달합니다.
+		dao.deleteMember(id);
+		nextPage="/mem4.do?action=listMembers";
 	}
 		RequestDispatcher dispatch = request.getRequestDispatcher(nextPage);
 		dispatch.forward(request, response);
