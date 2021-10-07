@@ -3,18 +3,40 @@
       PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- 회원 기능과 관련된 SQL문이 있는 member.xml 파일을 작성합니다.
+          먼저, 다른 파일의 SQL문과 구별하기 위해 네임스페이스(namespace)를
+     mapper.member로 지정하고, SQL문을 실행한 후 반환되는
+         회원 정보 레코드를 저장하기 위한 resultMap을 지정합니다.
+          각 레코드는 한 개의 MemberVO 객체를 생성한 후 지정한 속성에 따라
+          레코드의 칼럼 값을 저장합니다. select 태그의 id 속성은
+     MemberDAO에서 SQL문을 구분해서 호출하는 용도로 사용되며,
+         반환되는 레코드를 id가 memResult인 resultMap에 저장합니다.-->
+
+<!-- member.xml의 네임스페이스를 지정합니다. -->
 <mapper namespace="mapper.member">
-	<!--  
+
+<!-- SQL문을 실행한 후 반환되는 레코드들을 type 속성에서 지정한
+     memberVO 빈에 저장합니다. -->  
+<!-- 레코드의 칼럼 이름에 대해 memberVO의 같은 속성에 값도 설정합니다. -->
+<!-- type 속성을 memberVO로 설정하는 <resultMap>은
+     "HashMap을 이용한 모든 회원 정보 조회" 실습할 때는 주석 처리합니다. -->
+<!-- 
 	<resultMap id="memResult" type="memberVO">
+
 		<result property="id" column="id" />
         <result property="pwd" column="pwd" />
         <result property="name" column="name" />
         <result property="email" column="email" />
         <result property="joinDate" column="joinDate" />
 	</resultMap>
-	-->
+-->
 	 
-	 
+<!-- 이번에는 자바의 HashMap을 이용해 모든 회원을 죄회하는 기능을 실습해 보겠습니다.
+     <resultMap> 태그의 type 속성에는 HashMap이 지정되어 있습니다.
+         즉, SQL문 실행 시 레코드의 컬럼 이름을 key로 지정하고, 그 값을 value로 해서
+     Hashmap에 차례대로 저장합니다. -->
+<!-- 여기서, type="java.util.HashMap"의 의미는
+         조회한 레코드를 지정한 컬럼 이름을 key, 값을 value로 해서 저장합니다.-->  
 	<resultMap id="memResult" type="java.util.HashMap">
       <result property="id" column="id" />
       <result property="pwd" column="pwd" />
@@ -23,13 +45,36 @@
       <result property="joinDate" column="joinDate" />
    </resultMap>
 
-
+	<!-- DAO에서 namespace.id를 이용해(즉, id="selectAllMemberList")
+	         해당 SQL문을 호출합니다. -->
+	<!-- resultMap="memResult"의 의미는 반환되는 레코드를
+	     memResult에 저장합니다. -->
+	<!-- 조회한 회원 정보를 Hashmap에 저장합니다. -->
 	<select id="selectAllMemberList" resultMap="memResult">
+      <!-- SQL문의 >, <, <=, >= 같은 연산자들을 XML 파일에서 작성하면
+                    연산자가 아닌 특수 문자로 인식하므로 오류가 발생합니다.
+                    이러한 연산자들도 SQL문의 일부라는 것을 알려주기 위해
+           <![CDATA[ ... ]]> 태그 안에 작성해야 합니다.        -->
+      <!-- 즉, CDATA Section(영역)은 Mybatis와는 상관없는
+           XML 고유의 문법 영역으로서, CDATA 영역에 작성된 데이터는
+                    단순한 문자 데이터(Character DATA)이므로  XML 파서가
+                    해석하지 않도록 한다. 결국, CDATA Section(영역) 안에 작성된
+                    데이터는 XML 파서가 처리하지 않고 데이터베이스에 그대로 전달하므로
+                    문제가 발생하지 않는다. -->
       <![CDATA[
          select * from t_member	order by joinDate desc	 	
       ]]>
 	</select>
 
+	<!-- 회원의 ID와 비밀번호 조회 : 즉, 테이블의 회원 정보 중 문자열이나
+	         정수와 같은 기본형 데이터를 조회해 보겠습니다.
+	         그러기 위해, member.xml에서 select 태그의 SQL문에 접근하기 위해
+	     id를 설정합니다. resultType은 SQL문을 실행했을 때 한 개의 데이터를
+	         조회하므로 String(문자열), int(정수)로 지정합니다. -->	
+	<!-- MemberDAO에서 접근 시 사용할 SQL문의 id를 지정합니다.
+	         여기서는 id="selectName" 을 지정했습니다. -->
+	<!-- resultType="String"의 의미는 resultType 속성을 문자열로
+	         지정해 SQL문으로 조회한 이름(문자열)을 호출한 메서드로 반환합니다. -->
 	<select id="selectName" resultType="String">
     <![CDATA[
 	select name from t_member
@@ -37,6 +82,10 @@
     ]]>
 	</select>
 	
+	<!-- MemberDAO에서 접근 시 사용할 SQL문의 id를 지정합니다.
+	         여기서는 id="selectPwd" 을 지정했습니다. -->
+	<!-- resultType="int"의 의미는 resultType 속성을 int형으로
+	         지정해 SQL문으로 조회한 정수를 호출한 메서드로 반환합니다. -->
 	<select id="selectPwd" resultType="int" >
 	  <![CDATA[ 
 	    select pwd from t_member 

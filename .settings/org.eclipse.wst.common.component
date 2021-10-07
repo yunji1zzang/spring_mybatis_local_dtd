@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="spring_mybatis_resultMap_local_dtd">
+    <wb-module deploy-name="spring_mybatis">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resource2"/>
-        <property name="context-root" value="spring_mybatis_resultMap_local_dtd"/>
-        <property name="java-output-path" value="/spring_mybatis_resultMap_local_dtd/build/classes"/>
+        <property name="java-output-path" value="/spring_mybatis/build/classes"/>
+        <property name="context-root" value="spring_mybatis"/>
     </wb-module>
 </project-modules>
